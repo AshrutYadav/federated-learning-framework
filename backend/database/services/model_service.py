@@ -6,6 +6,18 @@ def create_model_version(
     round_number,
     model_path
 ):
+    existing = (
+        db.query(
+            GlobalModel
+        )
+        .filter(
+            GlobalModel.round_number == round_number
+        )
+        .first()
+    )
+
+    if existing:
+        return existing
 
     model = GlobalModel(
         round_number=round_number,
@@ -20,9 +32,9 @@ def create_model_version(
 
     return model
 
-
 def get_model_versions(db):
 
     return db.query(
         GlobalModel
     ).all()
+

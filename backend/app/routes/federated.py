@@ -11,6 +11,12 @@ from backend.app.core.state import (
 import torch
 import os
 
+
+
+from backend.security.anomaly import (
+detect_malicious_update
+)
+
 from backend.database.services.round_service import (
     get_current_round,
     increment_round
@@ -60,6 +66,14 @@ from backend.ml.aggregate import federated_average
 from backend.ml.serialization import deserialize_weights
 from backend.app.core.model_manager import model
 
+from backend.security.trust import (
+
+reduce_score,
+
+get_score
+
+)
+
 router = APIRouter(prefix="/federated")
 
 
@@ -107,6 +121,22 @@ def submit_weights(
     data: WeightSubmission,
     db: Session = Depends(get_db)
 ):
+    if detect_malicious_update(data.weights):
+        print(f"ATTACK DETECETD: {data.client_id}")
+        trust=reduce_score(data.client_id)
+        print(state["trust_scores"])
+        state["blocked_clients"] += 1
+        state["blocked_list"].append(data.client_id)
+        return{
+            "message": "Blocked",
+            "trust": trust
+
+        }
+
+    if get_score(data.client_id)<=20:
+        return{
+            "message":"Client Banned"
+        }
 
     submitted_updates[data.client_id] = data.weights
     print(
@@ -253,12 +283,14 @@ def metrics(
     db: Session = Depends(get_db)
 ):
 
-    return get_metrics(db)    
+    return get_metrics(db) 
+
+
 
 @router.get("/model_versions")
 def model_versions(
     db: Session = Depends(get_db)
-):
+    ):
 
     models = get_model_versions(db)
 
@@ -271,3 +303,19 @@ def model_versions(
             for m in models
         ]
     }
+
+
+@router.get("/blocked_clients")
+def blocked_clients():
+
+    return{
+        "blocked":state["blocked_list"]
+        }
+
+
+@router.get("/trust")
+def trust():
+
+    return{
+        "scores":state["trust_scores"]
+        }

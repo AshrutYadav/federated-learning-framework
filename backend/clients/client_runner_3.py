@@ -50,15 +50,17 @@ updated_weights = train_client(
 
 print("Local Training Complete")
 
-# Upload Updated Weights
+
+# Upload Attack
+
 requests.post(
     f"{BASE_URL}/submit_weights",
     json={
         "client_id": CLIENT_ID,
+
         "weights": serialize_weights(
             updated_weights
         )
     }
 )
-
 print("Weights Uploaded")

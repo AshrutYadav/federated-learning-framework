@@ -2,8 +2,10 @@ from backend.database.models.client import Client
 from backend.database.models.update import ModelUpdate
 from backend.database.models.round import TrainingRound
 
+from backend.app.core.state import state
 
 def get_metrics(db):
+    
 
     total_clients = db.query(
         Client
@@ -29,6 +31,12 @@ def get_metrics(db):
 
     return {
         "current_round": current_round,
+
         "total_clients": total_clients,
-        "total_updates": total_updates
-    }
+
+        "total_updates": total_updates,
+
+        "blocked_clients":state["blocked_clients"]
+}
+
+
