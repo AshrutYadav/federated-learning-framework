@@ -15,10 +15,10 @@ export default function ModelTimeline({ versions }) {
     .sort((a, b) => b.round - a.round)
 
   return (
-    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl p-4 shadow-lg shadow-black/40 h-full animate-fade-in-up">
+    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl p-4 shadow-lg shadow-black/40 h-full animate-fade-in-up flex flex-col">
       <h3 className="font-semibold text-fuchsia-50 text-sm mb-4">Model Versions</h3>
       
-      <div className="relative border-l border-fuchsia-900/50 ml-2.5 space-y-6">
+      <div className="relative border-l border-fuchsia-900/50 ml-2.5 space-y-6 flex-1 overflow-y-auto pr-2 pb-2">
         {uniqueVersions.map((v, idx) => (
           <div key={idx} className="relative pl-5">
             <div className={`absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full border ${idx === 0 ? 'bg-fuchsia-500 border-[#0B0814] ring-2 ring-fuchsia-500/50' : 'bg-indigo-900 border-[#1A1325]'}`}></div>
@@ -30,14 +30,11 @@ export default function ModelTimeline({ versions }) {
               </div>
             </div>
             
-            <div className="bg-[#0B0814]/50 border border-fuchsia-900/30 rounded-lg p-2.5 mt-1.5 flex justify-between items-center group hover:border-fuchsia-500/30 hover:bg-fuchsia-900/10 transition-colors">
+            <div className="bg-[#0B0814]/50 border border-fuchsia-900/30 rounded-lg p-2.5 mt-1.5 flex items-center group hover:border-fuchsia-500/30 hover:bg-fuchsia-900/10 transition-colors">
               <div className="flex items-center space-x-2 text-indigo-400/70">
                 <GitCommit size={14} />
-                <span className="font-mono text-[11px] truncate max-w-[120px] sm:max-w-[150px]">{v.path}</span>
+                <span className="font-mono text-[11px] truncate">{v.path}</span>
               </div>
-              <button className="text-indigo-500 hover:text-fuchsia-400 transition-colors opacity-0 group-hover:opacity-100">
-                <Download size={14} />
-              </button>
             </div>
           </div>
         ))}
