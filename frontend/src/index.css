@@ -20,5 +20,20 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply bg-[#0B0814] text-indigo-100 antialiased selection:bg-fuchsia-500/30;
+  @apply bg-[#0B0814] text-indigo-100 antialiased selection:bg-violet-500/30;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-violet-900/50 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-violet-700/80;
 }

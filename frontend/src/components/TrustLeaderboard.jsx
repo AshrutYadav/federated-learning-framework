@@ -8,7 +8,7 @@ export default function TrustLeaderboard({ trustData }) {
 
   if (clients.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center border border-dashed border-fuchsia-900/20 rounded-xl bg-[#1A1325]/50">
+      <div className="h-64 flex items-center justify-center border border-dashed border-violet-900/20 rounded-xl bg-[#1A1325]/50">
         <p className="text-indigo-400/50 font-medium">No Clients Registered</p>
       </div>
     )
@@ -21,16 +21,16 @@ export default function TrustLeaderboard({ trustData }) {
   }
 
   return (
-    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 animate-fade-in-up flex flex-col h-full">
-      <div className="p-3 border-b border-fuchsia-900/30 bg-[#1A1325]">
-        <h3 className="font-semibold text-fuchsia-50 text-sm">Client Trust Leaderboard</h3>
+    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-violet-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 animate-fade-in-up flex flex-col h-full">
+      <div className="p-3 border-b border-violet-900/30 bg-[#1A1325]">
+        <h3 className="font-semibold text-violet-50 text-sm">Client Trust Leaderboard</h3>
       </div>
-      <div className="divide-y divide-fuchsia-900/20 flex-1 overflow-y-auto max-h-72">
+      <div className="divide-y divide-violet-900/20 flex-1 overflow-y-auto max-h-72">
         {clients.map((c, idx) => {
           const status = getStatus(c.score)
           const Icon = status.icon
           return (
-            <div key={c.client} className="flex items-center justify-between p-3 hover:bg-fuchsia-900/10 transition-colors">
+            <div key={c.client} className="flex items-center justify-between p-3 hover:bg-violet-900/10 transition-colors">
               <div className="flex items-center space-x-3">
                 <span className="text-indigo-500 font-mono text-xs w-4">{idx + 1}.</span>
                 <div>
@@ -40,7 +40,7 @@ export default function TrustLeaderboard({ trustData }) {
               <div className="flex items-center space-x-4">
                 <div className="flex flex-col items-end">
                   <span className="text-[10px] text-indigo-400/70 uppercase">Score</span>
-                  <span className="font-mono text-fuchsia-100 text-sm">{c.score}</span>
+                  <span className="font-mono text-violet-100 text-sm">{c.score}</span>
                 </div>
                 <div className={`flex items-center space-x-1 px-2 py-0.5 rounded-full border text-[10px] font-medium w-20 justify-center ${status.color}`}>
                   <Icon size={12} />

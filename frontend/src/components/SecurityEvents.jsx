@@ -65,9 +65,9 @@ export default function SecurityEvents({ experiments, blockedClients }) {
   }
 
   return (
-    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 flex flex-col h-full animate-fade-in-up">
-      <div className="p-3 border-b border-fuchsia-900/30 bg-[#1A1325] flex justify-between items-center">
-        <h3 className="font-semibold text-fuchsia-50 text-sm">Security Events</h3>
+    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-violet-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 flex flex-col h-full animate-fade-in-up">
+      <div className="p-3 border-b border-violet-900/30 bg-[#1A1325] flex justify-between items-center">
+        <h3 className="font-semibold text-violet-50 text-sm">Security Events</h3>
         <span className="flex h-2.5 w-2.5">
           <span className={`animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full opacity-75 ${events[0]?.severity === 'danger' ? 'bg-rose-400' : events[0]?.severity === 'warning' ? 'bg-amber-400' : 'bg-emerald-400'}`}></span>
           <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${events[0]?.severity === 'danger' ? 'bg-rose-500' : events[0]?.severity === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>

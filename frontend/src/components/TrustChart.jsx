@@ -4,9 +4,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1A1325] border border-fuchsia-900/30 p-3 rounded-lg shadow-xl shadow-black/40">
+      <div className="bg-[#1A1325] border border-violet-900/30 p-3 rounded-lg shadow-xl shadow-black/40">
         <p className="text-indigo-200 font-medium mb-1">{label}</p>
-        <p className="text-fuchsia-50 font-bold">
+        <p className="text-violet-50 font-bold">
           Trust Score: <span className={payload[0].value < 50 ? "text-rose-400" : payload[0].value < 80 ? "text-amber-400" : "text-emerald-400"}>{payload[0].value}</span>
         </p>
       </div>
@@ -23,7 +23,7 @@ export default function TrustChart({ data }) {
 
   if (chartData.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center border border-dashed border-fuchsia-900/20 rounded-xl bg-[#1A1325]/50">
+      <div className="h-64 flex items-center justify-center border border-dashed border-violet-900/20 rounded-xl bg-[#1A1325]/50">
         <p className="text-indigo-400/50 font-medium">No Clients Connected</p>
       </div>
     )

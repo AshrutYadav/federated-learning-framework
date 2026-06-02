@@ -4,9 +4,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1A1325] border border-fuchsia-900/30 p-3 rounded-lg shadow-xl shadow-black/40">
+      <div className="bg-[#1A1325] border border-violet-900/30 p-3 rounded-lg shadow-xl shadow-black/40">
         <p className="text-indigo-200 font-medium mb-1">Round {label}</p>
-        <p className="text-fuchsia-400 font-bold">
+        <p className="text-violet-400 font-bold">
           Accuracy: {payload[0].value.toFixed(2)}%
         </p>
       </div>
@@ -18,7 +18,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default function AccuracyChart({ data }) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center border border-dashed border-fuchsia-900/20 rounded-xl bg-[#1A1325]/50">
+      <div className="h-64 flex items-center justify-center border border-dashed border-violet-900/20 rounded-xl bg-[#1A1325]/50">
         <p className="text-indigo-400/50 font-medium">No Training Data Available</p>
       </div>
     )

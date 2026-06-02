@@ -57,21 +57,21 @@ export default function Dashboard() {
   const accuracyDiff = Math.abs(latestAccuracy - prevAccuracy).toFixed(1)
 
   return (
-    <div className="min-h-screen bg-[#0B0814] text-indigo-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-fuchsia-500/30">
+    <div className="min-h-screen bg-[#0B0814] text-indigo-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-violet-500/30">
       
       {/* HEADER */}
       <header className="mb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-4 animate-fade-in-up">
         <div>
           <div className="flex items-center space-x-3 mb-1">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-fuchsia-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-fuchsia-500/20">
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
               <Activity className="text-white" size={16} />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-fuchsia-50">Federated Monitoring</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-violet-50">Federated Monitoring</h1>
           </div>
           <p className="text-indigo-400/80 text-sm">Trust-Aware Distributed Training System</p>
         </div>
 
-        <div className="flex items-center space-x-3 bg-[#1A1325]/80 p-2 rounded-lg border border-fuchsia-900/20 backdrop-blur-sm shadow-lg shadow-black/20">
+        <div className="flex items-center space-x-3 bg-[#1A1325]/80 p-2 rounded-lg border border-violet-900/20 backdrop-blur-sm shadow-lg shadow-black/20">
           <div className="flex items-center space-x-2 px-2 py-0.5">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -79,12 +79,12 @@ export default function Dashboard() {
             </span>
             <span className="text-[11px] font-medium text-emerald-400/90 uppercase tracking-wider">System Online</span>
           </div>
-          <div className="w-px h-4 bg-fuchsia-900/30"></div>
+          <div className="w-px h-4 bg-violet-900/30"></div>
           <div className="flex items-center space-x-1.5 px-2 py-0.5">
             <Database size={12} className="text-indigo-400" />
             <span className="text-[11px] font-medium text-indigo-300 uppercase tracking-wider">DB Connected</span>
           </div>
-          <div className="w-px h-4 bg-fuchsia-900/30"></div>
+          <div className="w-px h-4 bg-violet-900/30"></div>
           <div className="flex items-center space-x-1.5 px-2 py-0.5">
             <Users size={12} className="text-indigo-400" />
             <span className="text-[11px] font-medium text-indigo-300 uppercase tracking-wider">{metrics?.total_clients || 0} Clients</span>
@@ -136,18 +136,18 @@ export default function Dashboard() {
 
       {/* MAIN ANALYTICS ROW (3 CHARTS) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up">
-          <h3 className="font-semibold text-fuchsia-50 text-sm mb-4">Accuracy vs Round</h3>
+        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-violet-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up">
+          <h3 className="font-semibold text-violet-50 text-sm mb-4">Accuracy vs Round</h3>
           <AccuracyChart data={experiments} />
         </div>
         
-        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-          <h3 className="font-semibold text-fuchsia-50 text-sm mb-4">Trust Distribution</h3>
+        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-violet-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+          <h3 className="font-semibold text-violet-50 text-sm mb-4">Trust Distribution</h3>
           <TrustChart data={trust} />
         </div>
 
-        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <h3 className="font-semibold text-fuchsia-50 text-sm mb-4">Anomalies Detected</h3>
+        <div className="bg-[#1A1325]/80 backdrop-blur-md border border-violet-900/20 rounded-xl p-4 shadow-lg shadow-black/40 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <h3 className="font-semibold text-violet-50 text-sm mb-4">Anomalies Detected</h3>
           <SecurityChart data={experiments} />
         </div>
       </div>

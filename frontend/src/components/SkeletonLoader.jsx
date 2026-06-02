@@ -13,18 +13,18 @@ export default function SkeletonLoader() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="h-28 bg-[#1A1325] rounded-xl border border-fuchsia-900/10"></div>
+          <div key={i} className="h-28 bg-[#1A1325] rounded-xl border border-violet-900/10"></div>
         ))}
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-        <div className="h-72 bg-[#1A1325] rounded-xl border border-fuchsia-900/10"></div>
-        <div className="h-72 bg-[#1A1325] rounded-xl border border-fuchsia-900/10"></div>
+        <div className="h-72 bg-[#1A1325] rounded-xl border border-violet-900/10"></div>
+        <div className="h-72 bg-[#1A1325] rounded-xl border border-violet-900/10"></div>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-        <div className="lg:col-span-2 h-72 bg-[#1A1325] rounded-xl border border-fuchsia-900/10"></div>
-        <div className="lg:col-span-1 h-72 bg-[#1A1325] rounded-xl border border-fuchsia-900/10"></div>
+        <div className="lg:col-span-2 h-72 bg-[#1A1325] rounded-xl border border-violet-900/10"></div>
+        <div className="lg:col-span-1 h-72 bg-[#1A1325] rounded-xl border border-violet-900/10"></div>
       </div>
     </div>
   )
