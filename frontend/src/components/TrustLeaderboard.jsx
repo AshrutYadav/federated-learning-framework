@@ -8,42 +8,42 @@ export default function TrustLeaderboard({ trustData }) {
 
   if (clients.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center border border-dashed border-slate-700 rounded-xl bg-slate-800/20">
-        <p className="text-slate-500 font-medium">No Clients Registered</p>
+      <div className="h-64 flex items-center justify-center border border-dashed border-fuchsia-900/20 rounded-xl bg-[#1A1325]/50">
+        <p className="text-indigo-400/50 font-medium">No Clients Registered</p>
       </div>
     )
   }
 
   const getStatus = (score) => {
-    if (score >= 80) return { label: "Trusted", icon: Shield, color: "text-green-400 bg-green-400/10 border-green-400/20" }
+    if (score >= 80) return { label: "Trusted", icon: Shield, color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" }
     if (score >= 50) return { label: "Warned", icon: ShieldAlert, color: "text-amber-400 bg-amber-400/10 border-amber-400/20" }
-    return { label: "Untrusted", icon: ShieldX, color: "text-red-400 bg-red-400/10 border-red-400/20" }
+    return { label: "Untrusted", icon: ShieldX, color: "text-rose-400 bg-rose-400/10 border-rose-400/20" }
   }
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-md border border-slate-700/50 rounded-xl overflow-hidden shadow-lg shadow-black/20">
-      <div className="p-4 border-b border-slate-700/50">
-        <h3 className="font-semibold text-slate-200">Client Trust Leaderboard</h3>
+    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 animate-fade-in-up flex flex-col h-full">
+      <div className="p-3 border-b border-fuchsia-900/30 bg-[#1A1325]">
+        <h3 className="font-semibold text-fuchsia-50 text-sm">Client Trust Leaderboard</h3>
       </div>
-      <div className="divide-y divide-slate-700/50 max-h-72 overflow-y-auto">
+      <div className="divide-y divide-fuchsia-900/20 flex-1 overflow-y-auto max-h-72">
         {clients.map((c, idx) => {
           const status = getStatus(c.score)
           const Icon = status.icon
           return (
-            <div key={c.client} className="flex items-center justify-between p-4 hover:bg-slate-700/20 transition-colors">
-              <div className="flex items-center space-x-4">
-                <span className="text-slate-500 font-mono text-sm w-4">{idx + 1}.</span>
+            <div key={c.client} className="flex items-center justify-between p-3 hover:bg-fuchsia-900/10 transition-colors">
+              <div className="flex items-center space-x-3">
+                <span className="text-indigo-500 font-mono text-xs w-4">{idx + 1}.</span>
                 <div>
-                  <p className="text-slate-200 font-medium">{c.client}</p>
+                  <p className="text-indigo-100 font-medium text-sm">{c.client}</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-4">
                 <div className="flex flex-col items-end">
-                  <span className="text-sm text-slate-400">Score</span>
-                  <span className="font-mono text-white">{c.score}</span>
+                  <span className="text-[10px] text-indigo-400/70 uppercase">Score</span>
+                  <span className="font-mono text-fuchsia-100 text-sm">{c.score}</span>
                 </div>
-                <div className={`flex items-center space-x-1 px-2.5 py-1 rounded-full border text-xs font-medium w-24 justify-center ${status.color}`}>
-                  <Icon size={14} />
+                <div className={`flex items-center space-x-1 px-2 py-0.5 rounded-full border text-[10px] font-medium w-20 justify-center ${status.color}`}>
+                  <Icon size={12} />
                   <span>{status.label}</span>
                 </div>
               </div>

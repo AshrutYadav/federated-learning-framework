@@ -3,10 +3,8 @@ import { AlertTriangle, UserX, ShieldMinus, CheckCircle2 } from "lucide-react"
 
 export default function SecurityEvents({ experiments, blockedClients }) {
   
-  // Synthesize events from available data
   let events = []
 
-  // Create events based on blocked clients
   if (blockedClients && blockedClients.length > 0) {
     blockedClients.forEach(client => {
       events.push({
@@ -20,9 +18,7 @@ export default function SecurityEvents({ experiments, blockedClients }) {
     })
   }
 
-  // Create events based on experiments
   if (experiments && experiments.length > 0) {
-    // Sort experiments by round descending
     const recentExps = [...experiments].sort((a, b) => b.round - a.round).slice(0, 5)
     
     recentExps.forEach(exp => {
@@ -39,7 +35,6 @@ export default function SecurityEvents({ experiments, blockedClients }) {
     })
   }
 
-  // If no events, show a success state
   if (events.length === 0) {
     events.push({
       id: "all-clear",
@@ -53,44 +48,44 @@ export default function SecurityEvents({ experiments, blockedClients }) {
 
   const getEventIcon = (severity) => {
     switch(severity) {
-      case "danger": return <UserX size={18} className="text-red-400" />
-      case "warning": return <AlertTriangle size={18} className="text-amber-400" />
-      case "success": return <CheckCircle2 size={18} className="text-green-400" />
-      default: return <ShieldMinus size={18} className="text-slate-400" />
+      case "danger": return <UserX size={16} className="text-rose-400" />
+      case "warning": return <AlertTriangle size={16} className="text-amber-400" />
+      case "success": return <CheckCircle2 size={16} className="text-emerald-400" />
+      default: return <ShieldMinus size={16} className="text-indigo-400" />
     }
   }
 
   const getEventBg = (severity) => {
     switch(severity) {
-      case "danger": return "bg-red-400/10 border-red-400/20"
+      case "danger": return "bg-rose-400/10 border-rose-400/20"
       case "warning": return "bg-amber-400/10 border-amber-400/20"
-      case "success": return "bg-green-400/10 border-green-400/20"
-      default: return "bg-slate-700 border-slate-600"
+      case "success": return "bg-emerald-400/10 border-emerald-400/20"
+      default: return "bg-indigo-900/30 border-indigo-500/20"
     }
   }
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-md border border-slate-700/50 rounded-xl overflow-hidden shadow-lg shadow-black/20 flex flex-col h-full">
-      <div className="p-4 border-b border-slate-700/50 flex justify-between items-center">
-        <h3 className="font-semibold text-slate-200">Security Events</h3>
-        <span className="flex h-3 w-3">
-          <span className={`animate-ping absolute inline-flex h-3 w-3 rounded-full opacity-75 ${events[0]?.severity === 'danger' ? 'bg-red-400' : events[0]?.severity === 'warning' ? 'bg-amber-400' : 'bg-green-400'}`}></span>
-          <span className={`relative inline-flex rounded-full h-3 w-3 ${events[0]?.severity === 'danger' ? 'bg-red-500' : events[0]?.severity === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`}></span>
+    <div className="bg-[#1A1325]/80 backdrop-blur-md border border-fuchsia-900/20 rounded-xl overflow-hidden shadow-lg shadow-black/40 flex flex-col h-full animate-fade-in-up">
+      <div className="p-3 border-b border-fuchsia-900/30 bg-[#1A1325] flex justify-between items-center">
+        <h3 className="font-semibold text-fuchsia-50 text-sm">Security Events</h3>
+        <span className="flex h-2.5 w-2.5">
+          <span className={`animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full opacity-75 ${events[0]?.severity === 'danger' ? 'bg-rose-400' : events[0]?.severity === 'warning' ? 'bg-amber-400' : 'bg-emerald-400'}`}></span>
+          <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${events[0]?.severity === 'danger' ? 'bg-rose-500' : events[0]?.severity === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
         </span>
       </div>
-      <div className="p-4 flex-1 overflow-y-auto max-h-72">
-        <div className="space-y-4">
+      <div className="p-3 flex-1 overflow-y-auto max-h-72">
+        <div className="space-y-3">
           {events.map((event) => (
-            <div key={event.id} className="flex gap-4 items-start">
-              <div className={`mt-0.5 p-2 rounded-full border ${getEventBg(event.severity)}`}>
+            <div key={event.id} className="flex gap-3 items-start">
+              <div className={`mt-0.5 p-1.5 rounded-full border ${getEventBg(event.severity)}`}>
                 {getEventIcon(event.severity)}
               </div>
-              <div className="flex-1 space-y-1">
+              <div className="flex-1 space-y-0.5">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-slate-200">{event.title}</p>
-                  <span className="text-xs text-slate-500">{event.time}</span>
+                  <p className="text-[13px] font-medium text-indigo-100">{event.title}</p>
+                  <span className="text-[10px] text-indigo-400/70">{event.time}</span>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">{event.description}</p>
+                <p className="text-[11px] text-indigo-300/80 leading-relaxed">{event.description}</p>
               </div>
             </div>
           ))}
