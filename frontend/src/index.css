@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #0F172A;
+  --color-secondary-bg: #1E293B;
+  --color-accent: #38BDF8;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-slate-900 text-slate-200 antialiased selection:bg-sky-500/30;
+}
