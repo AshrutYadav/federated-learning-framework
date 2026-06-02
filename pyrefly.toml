@@ -1,0 +1,21 @@
+# Pyrefly configuration for the federated-learning-framework project.
+
+[pyrefly]
+
+# Without this, Pyrefly walks up from pyrefly.toml looking for __init__.py files
+# to infer the import root. Explicitly setting search_roots ensures that
+# `backend.*`, `frontend.*` etc. always resolve relative to the project root.
+search_roots = ["d:/federated-learning-framework"]
+
+# Exclude generated/binary directories from project-wide analysis.
+project_excludes = [
+    "**/__pyrefly_virtual__/**",
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/data/**",
+    "**/__pycache__/**",
+    "**/*.pth",
+]
+
+# The interpreter that has torch, fastapi, sqlalchemy, etc. installed.
+python_interpreter = "C:/Users/ashru/AppData/Local/Programs/Python/Python39/python.exe"

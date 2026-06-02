@@ -6,6 +6,7 @@ from backend.database.models.client import Client
 from backend.database.models.round import TrainingRound
 from backend.database.models.update import ModelUpdate
 from backend.database.models.global_model import GlobalModel
+from backend.database.models.experiment import Experiment
 
 Base.metadata.create_all(bind=engine)
 

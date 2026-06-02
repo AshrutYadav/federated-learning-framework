@@ -4,6 +4,8 @@ import api from "../services/api"
 
 import RoundChart from "../components/RoundChart"
 
+import ExperimentChart from "../components/ExperimentChart"
+
 export default function Dashboard() {
 
     const [metrics, setMetrics] = useState(null)
@@ -11,6 +13,10 @@ export default function Dashboard() {
     const [versions, setVersions] = useState([])
 
     const [blocked, setBlocked] = useState([])
+    const [experiments, setExperiments] = useState([])
+
+    const [trust, setTrust] =
+        useState({})
 
     const load = () => {
 
@@ -43,6 +49,27 @@ export default function Dashboard() {
                     setBlocked(
                         r.data.blocked
                     )
+            )
+
+
+
+        api
+            .get(
+                "/experiments"
+            )
+            .then(
+                r =>
+                    setExperiments(
+                        r.data.experiments
+                    )
+            )
+
+        api
+            .get("/trust")
+            .then(
+                r => setTrust(
+                    r.data.scores
+                )
             )
 
     }
@@ -138,7 +165,7 @@ export default function Dashboard() {
 
             <div className="mt-10">
 
-                <RoundChart />
+                <ExperimentChart data={experiments} />
 
             </div>
 
@@ -192,6 +219,38 @@ export default function Dashboard() {
 
             </div>
 
+
+
+
+            <h2 className="text-2xl mt-10 mb-4">
+                Trust Leaderboard
+            </h2>
+
+            <div className="border p-4">
+
+                {
+                    Object.entries(trust)
+                        .map(
+                            ([client, score]) => (
+                                <div
+                                    key={client}
+                                    className="flex justify-between border-b py-2"
+                                >
+
+                                    <span>
+                                        {client}
+                                    </span>
+
+                                    <span>
+                                        {score}
+                                    </span>
+
+                                </div>
+                            ))
+                }
+
+            </div>
+
             <div className="mt-10">
 
                 <h2>
@@ -212,6 +271,68 @@ export default function Dashboard() {
                             >
 
                                 {c}
+
+                            </div>
+
+                    )
+
+                }
+
+            </div>
+
+
+            <div className="border rounded p-5">
+
+                Latest Trust
+
+                <h2>
+
+                    {
+
+                        Math.round(
+                            metrics.avg_trust
+                        )
+
+                    }
+
+                </h2>
+
+            </div>
+
+
+            <div className="mt-10">
+
+                <h2 className="text-2xl mb-4">
+
+                    Experiment History
+
+                </h2>
+
+                {
+
+                    experiments.map(
+
+                        (exp, index) =>
+
+                            <div
+                                key={index}
+                                className="border p-3 mb-2"
+                            >
+
+                                Round:
+                                {exp.round}
+
+                                |
+                                Accuracy:
+                                {exp.accuracy?.toFixed(2)}%
+
+                                Trust:
+                                {exp.avg_trust}
+
+                                |
+
+                                Blocked:
+                                {exp.blocked}
 
                             </div>
 

@@ -7,10 +7,15 @@ from backend.ml.serialization import (
 )
 from backend.ml.train import train_client
 
-from backend.clients.client_1 import get_client_data
+from backend.clients.client_3 import get_client_data
 
 
-BASE_URL = "http://127.0.0.1:8000/federated"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/federated")
 
 CLIENT_ID = "client_3"
 
@@ -53,14 +58,23 @@ print("Local Training Complete")
 
 # Upload Attack
 
-requests.post(
+# For Client 3 to malicious
+# bad_weights = weights.copy()
+
+# for k, v in bad_weights.items():
+#     bad_weights[k] = v * 1000
+
+response = requests.post(
     f"{BASE_URL}/submit_weights",
     json={
         "client_id": CLIENT_ID,
-
         "weights": serialize_weights(
             updated_weights
         )
     }
 )
-print("Weights Uploaded")
+
+if not response.ok:
+    print(f"ERROR: Server rejected weights — {response.status_code}: {response.text}")
+else:
+    print(f"Weights Uploaded | Server: {response.json().get('message')}")

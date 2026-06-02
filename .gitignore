@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.vscode/
+node_modules/
+models/
+*.pth
+temp_global_model.pth
+.env

@@ -7,10 +7,15 @@ from backend.ml.serialization import (
 )
 from backend.ml.train import train_client
 
-from backend.clients.client_1 import get_client_data
+from backend.clients.client_2 import get_client_data
 
 
-BASE_URL = "http://127.0.0.1:8000/federated"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/federated")
 
 CLIENT_ID = "client_2"
 
@@ -51,7 +56,7 @@ updated_weights = train_client(
 print("Local Training Complete")
 
 # Upload Updated Weights
-requests.post(
+response = requests.post(
     f"{BASE_URL}/submit_weights",
     json={
         "client_id": CLIENT_ID,
@@ -61,4 +66,7 @@ requests.post(
     }
 )
 
-print("Weights Uploaded")
+if not response.ok:
+    print(f"ERROR: Server rejected weights — {response.status_code}: {response.text}")
+else:
+    print(f"Weights Uploaded | Server: {response.json().get('message')}")
