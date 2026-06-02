@@ -1,5 +1,8 @@
 # Trust-Aware Federated Learning Framework
 
+<img width="1216" height="808" alt="image" src="https://github.com/user-attachments/assets/a632dd7f-f030-4a60-8f39-5c332b26efd4" />
+
+
 ## Overview
 
 This project is a full-stack Federated Learning Framework that enables distributed model training while protecting against malicious client updates through anomaly detection and trust-aware aggregation.
