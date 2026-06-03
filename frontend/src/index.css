@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* stylelint-disable */
 @theme {
   --color-primary-bg: #0B0814;
   --color-secondary-bg: #1A1325;
@@ -17,10 +18,18 @@
     }
   }
 }
+/* stylelint-enable */
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply bg-[#0B0814] text-indigo-100 antialiased selection:bg-violet-500/30;
+  background-color: #0B0814;
+  color: rgb(224 231 255); /* indigo-100 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body ::selection {
+  background-color: rgb(139 92 246 / 0.3); /* violet-500/30 */
 }
 
 /* Custom Scrollbar */
@@ -32,8 +41,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-violet-900/50 rounded-full;
+  background-color: rgb(76 29 149 / 0.5); /* violet-900/50 */
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-violet-700/80;
+  background-color: rgb(109 40 217 / 0.8); /* violet-700/80 */
 }

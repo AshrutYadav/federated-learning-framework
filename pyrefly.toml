@@ -5,7 +5,7 @@
 # Without this, Pyrefly walks up from pyrefly.toml looking for __init__.py files
 # to infer the import root. Explicitly setting search_roots ensures that
 # `backend.*`, `frontend.*` etc. always resolve relative to the project root.
-search_roots = ["d:/federated-learning-framework"]
+search_roots = ["."]
 
 # Exclude generated/binary directories from project-wide analysis.
 project_excludes = [
