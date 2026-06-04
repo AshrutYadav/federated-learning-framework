@@ -8,15 +8,27 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.routes.federated import router
 from backend.app.core.state import state
-from backend.database.connection import SessionLocal
+from backend.database.connection import SessionLocal, engine
+from backend.database.base import Base
+
+# Import all models so their metadata is registered with Base before create_all
+from backend.database.models.client import Client  # noqa: F401
+from backend.database.models.round import TrainingRound  # noqa: F401
+from backend.database.models.update import ModelUpdate  # noqa: F401
+from backend.database.models.global_model import GlobalModel  # noqa: F401
+from backend.database.models.experiment import Experiment  # noqa: F401
+
 from backend.database.services.round_service import get_current_round
-
-
 from backend.database.services.client_service import get_all_clients
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # ── Startup: sync in-memory state from the database ──────────────────
+    # ── Startup: ensure all tables exist, then sync in-memory state ───────
+
+    # Step 0: Create tables if they don't exist (idempotent — safe on every restart)
+    Base.metadata.create_all(bind=engine)
+    print("[startup] Database tables verified / created")
+
     db = SessionLocal()
     try:
         # 1. Restore current round counter
@@ -46,6 +58,10 @@ app = FastAPI(
 )
 
 app.include_router(router)
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
 app.add_middleware(
     CORSMiddleware,
