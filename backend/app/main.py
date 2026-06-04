@@ -12,21 +12,26 @@ from backend.database.connection import SessionLocal
 from backend.database.services.round_service import get_current_round
 
 
+from backend.database.services.client_service import get_all_clients
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # ── Startup: sync in-memory round counter from the database ──────────
-    # state["current_round"] is hard-coded to 1 in state.py.
-    # Every uvicorn --reload restart resets it to 1 even though the DB may
-    # be at round 8, 11, etc.  When aggregation then runs it calls
-    # create_experiment(db, state["current_round"]=1, ...) which finds an
-    # existing row for round 1 and silently does nothing, while the
-    # TrainingRound counter keeps incrementing — producing the gap where
-    # the dashboard shows Round 11 but only 7 experiment records exist.
+    # ── Startup: sync in-memory state from the database ──────────────────
     db = SessionLocal()
     try:
+        # 1. Restore current round counter
         db_round = get_current_round(db)
         state["current_round"] = db_round
         print(f"[startup] state['current_round'] synced from DB → {db_round}")
+
+        # 2. Restore trust scores from the DB for every registered client.
+        #    Each client's trust_score column holds the last persisted value,
+        #    so scores correctly survive server restarts / --reload cycles.
+        clients = get_all_clients(db)
+        for client in clients:
+            if client.client_id not in state["trust_scores"]:
+                state["trust_scores"][client.client_id] = client.trust_score
+        print(f"[startup] trust_scores restored for {len(clients)} client(s)")
     finally:
         db.close()
 

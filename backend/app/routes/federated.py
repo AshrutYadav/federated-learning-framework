@@ -43,7 +43,10 @@ from fastapi import Depends
 from backend.database.dependencies import get_db
 from backend.database.services.client_service import (
     create_client,
-    get_all_clients
+    get_all_clients,
+    delete_client,
+    delete_all_clients,
+    update_client_trust
 )
 from backend.database.services.round_service import (
     get_current_round
@@ -51,7 +54,7 @@ from backend.database.services.round_service import (
 from backend.ml.aggregate import federated_average
 from backend.ml.serialization import deserialize_weights
 from backend.app.core.model_manager import model
-from backend.security.trust import (reduce_score,get_score)
+from backend.security.trust import (reduce_score, get_score, set_score)
 from backend.ml.trust_aggregate import (
     trust_average
 )
@@ -119,6 +122,59 @@ def get_clients(
     }
 
 
+@router.patch("/clients/{client_id}/trust")
+def patch_trust(
+    client_id: str,
+    body: dict,
+    db: Session = Depends(get_db)
+):
+    """Admin endpoint — manually set a client's trust score."""
+    score = body.get("score")
+    if score is None:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=422, detail="'score' field required")
+    new_score = set_score(client_id, int(score))
+    update_client_trust(db, client_id, new_score)   # persist to DB
+    return {"client_id": client_id, "trust_score": new_score}
+
+
+@router.delete("/clients/{client_id}")
+def remove_client(
+    client_id: str,
+    db: Session = Depends(get_db)
+):
+    """Remove a specific client from the DB and in-memory trust state."""
+    deleted = delete_client(db, client_id)
+    if not deleted:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=f"Client '{client_id}' not found")
+
+    # Also purge from in-memory state
+    state["trust_scores"].pop(client_id, None)
+    if client_id in state["blocked_list"]:
+        state["blocked_list"].remove(client_id)
+    submitted_updates.pop(client_id, None)
+    if client_id in registered_clients:
+        registered_clients.remove(client_id)
+
+    return {"message": f"Client '{client_id}' removed successfully"}
+
+
+@router.delete("/clients")
+def remove_all_clients(
+    db: Session = Depends(get_db)
+):
+    """Remove ALL clients from the DB and reset in-memory trust state."""
+    count = delete_all_clients(db)
+
+    state["trust_scores"].clear()
+    state["blocked_list"].clear()
+    state["blocked_clients"] = 0
+    submitted_updates.clear()
+    registered_clients.clear()
+
+    return {"message": f"{count} client(s) removed", "count": count}
+
 
 MIN_CLIENTS = 2
 
@@ -137,6 +193,7 @@ def submit_weights(
     if is_malicious:
         print(f"ATTACK DETECTED: {data.client_id}")
         trust = reduce_score(data.client_id)
+        update_client_trust(db, data.client_id, trust)   # persist to DB
         print(state["trust_scores"])
         state["blocked_clients"] += 1
         state["blocked_list"].append(data.client_id)

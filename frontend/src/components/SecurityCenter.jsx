@@ -47,21 +47,33 @@ function EventRow({ icon: Icon, title, desc, severity, time }) {
   )
 }
 
-export default function SecurityCenter({ experiments, blockedClients }) {
-  const blockedCount = (blockedClients || []).length
+export default function SecurityCenter({ experiments, blockedClients, trustScores }) {
+  // Count clients whose score is actually ≤ 20 (permanently banned)
+  const scores = trustScores || {}
+  const permanentlyBanned = (blockedClients || []).filter(c => (scores[c] ?? 100) <= 20)
+  const attacksDetected   = (blockedClients || []).filter(c => (scores[c] ?? 100) > 20)
+
+  const blockedCount = permanentlyBanned.length
   const anomalyCount = (experiments || []).filter(e => e.blocked > 0).length
-  const score = Math.max(0, 100 - blockedCount * 15 - anomalyCount * 3)
+  const totalAttacks = (blockedClients || []).length
+  const score = Math.max(0, 100 - blockedCount * 15 - totalAttacks * 5 - anomalyCount * 3)
   const threatLevel = score >= 90 ? "LOW" : score >= 70 ? "MEDIUM" : "HIGH"
   const threatColors = { LOW: "#10B981", MEDIUM: "#F59E0B", HIGH: "#EF4444" }
 
   // Build events feed
   let events = []
-  if (blockedClients && blockedClients.length > 0) {
-    blockedClients.forEach(c => events.push({
-      icon: UserX, title: "Client Permanently Blocked", severity: "danger",
-      desc: `Malicious update threshold reached for ${c}.`, time: "Recent"
-    }))
-  }
+
+  // Permanently banned clients (score ≤ 20)
+  permanentlyBanned.forEach(c => events.push({
+    icon: UserX, title: "Client Permanently Banned", severity: "danger",
+    desc: `Trust score reached 0 — ${c} is permanently excluded.`, time: "Recent"
+  }))
+
+  // Clients that were caught but not yet banned (score > 20)
+  attacksDetected.forEach(c => events.push({
+    icon: AlertTriangle, title: "Attack Detected & Blocked", severity: "warning",
+    desc: `Malicious weights rejected from ${c}. Trust score reduced.`, time: "Recent"
+  }))
   const recent = [...(experiments || [])].sort((a,b) => b.round - a.round).slice(0,3)
   recent.forEach(exp => {
     if (exp.blocked > 0) events.push({

@@ -213,7 +213,7 @@ export default function Dashboard() {
       <div style={{ display: "grid", gridTemplateColumns: "5fr 4fr 3fr", gap: 16, alignItems: "start" }}>
         <div style={{ minWidth: 0 }}><ExperimentGrid experiments={experiments} /></div>
         <div style={{ minWidth: 0, maxHeight: 440, display: "flex", flexDirection: "column" }}>
-          <SecurityCenter experiments={experiments} blockedClients={blocked} />
+          <SecurityCenter experiments={experiments} blockedClients={blocked} trustScores={trust} />
         </div>
         <div style={{ minWidth: 0 }}>
           <VersionHistory versions={versions} />

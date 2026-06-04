@@ -20,3 +20,10 @@ class Client(Base):
         unique=True,
         nullable=False
     )
+
+    trust_score = Column(
+        Integer,
+        default=100,
+        nullable=False,
+        server_default="100"
+    )

@@ -1,22 +1,40 @@
 import React from "react"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
 
+// ── 4-tier trust classification ──────────────────────────────────────────
+function getTier(score) {
+  if (score >= 80) return "Healthy"
+  if (score >= 50) return "Warning"
+  if (score >= 21) return "Suspicious"
+  return "Blocked"
+}
+
+const TIERS = [
+  { label: "Healthy",    color: "#10B981", range: "80–100" },
+  { label: "Warning",    color: "#F59E0B", range: "50–79"  },
+  { label: "Suspicious", color: "#F97316", range: "21–49"  },
+  { label: "Blocked",    color: "#EF4444", range: "0–20"   },
+]
+
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload || !payload.length) return null
   const d = payload[0]
+  const tier = TIERS.find(t => t.label === d.name)
   return (
     <div style={{
       background: "#1B2130", border: "1px solid rgba(255,255,255,0.1)",
       borderRadius: 10, padding: "10px 14px", boxShadow: "0 16px 40px rgba(0,0,0,0.4)"
     }}>
-      <p style={{ fontSize: 12, fontWeight: 700, color: d.payload.color, marginBottom: 4 }}>{d.name}</p>
-      <p style={{ fontSize: 13, color: "#F8FAFC" }}>{d.value} clients ({d.payload.pct}%)</p>
+      <p style={{ fontSize: 12, fontWeight: 700, color: d.payload.color, marginBottom: 2 }}>{d.name}</p>
+      <p style={{ fontSize: 11, color: "#64748B", marginBottom: 4 }}>Score {tier?.range}</p>
+      <p style={{ fontSize: 13, color: "#F8FAFC" }}>{d.value} client{d.value !== 1 ? "s" : ""} ({d.payload.pct}%)</p>
     </div>
   )
 }
 
 export default function TrustDonut({ data }) {
-  const scores = Object.values(data || {})
+  const entries = Object.entries(data || {}) // [[client_id, score], ...]
+  const scores  = entries.map(([, s]) => s)
 
   if (scores.length === 0) {
     return (
@@ -30,16 +48,21 @@ export default function TrustDonut({ data }) {
     )
   }
 
-  const trusted  = scores.filter(s => s >= 80).length
-  const warning  = scores.filter(s => s >= 50 && s < 80).length
-  const blocked  = scores.filter(s => s < 50).length
-  const total    = scores.length
+  const total = scores.length
 
-  const chartData = [
-    { name: "Trusted",  value: trusted, color: "#10B981", pct: Math.round((trusted/total)*100) },
-    { name: "Warning",  value: warning, color: "#F59E0B", pct: Math.round((warning/total)*100) },
-    { name: "Blocked",  value: blocked, color: "#EF4444", pct: Math.round((blocked/total)*100) },
-  ].filter(d => d.value > 0)
+  const counts = {
+    Healthy:    scores.filter(s => s >= 80).length,
+    Warning:    scores.filter(s => s >= 50 && s < 80).length,
+    Suspicious: scores.filter(s => s >= 21 && s < 50).length,
+    Blocked:    scores.filter(s => s <= 20).length,
+  }
+
+  const chartData = TIERS.map(t => ({
+    name:  t.label,
+    value: counts[t.label],
+    color: t.color,
+    pct:   Math.round((counts[t.label] / total) * 100),
+  })).filter(d => d.value > 0)
 
   return (
     <div className="card" style={{ padding: 20 }}>
@@ -69,26 +92,28 @@ export default function TrustDonut({ data }) {
           </div>
         </div>
 
-        {/* Legend */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-          {[
-            { label: "Trusted",  count: trusted,  color: "#10B981" },
-            { label: "Warning",  count: warning,  color: "#F59E0B" },
-            { label: "Blocked",  count: blocked,  color: "#EF4444" },
-          ].map(({ label, count, color }) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 2, background: color }} />
-                <span style={{ fontSize: 12, color: "#94A3B8" }}>{label}</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 48, height: 3, borderRadius: 9999, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${total > 0 ? (count/total)*100 : 0}%`, background: color, borderRadius: 9999, transition: "width 0.6s ease" }} />
+        {/* Legend — all 4 tiers always shown */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 7 }}>
+          {TIERS.map(({ label, color, range }) => {
+            const count = counts[label]
+            return (
+              <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 2, background: color }} />
+                  <div>
+                    <span style={{ fontSize: 12, color: "#94A3B8" }}>{label}</span>
+                    <span style={{ fontSize: 10, color: "#475569", marginLeft: 4 }}>{range}</span>
+                  </div>
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#F8FAFC", minWidth: 16, textAlign: "right" }}>{count}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 48, height: 3, borderRadius: 9999, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${total > 0 ? (count / total) * 100 : 0}%`, background: color, borderRadius: 9999, transition: "width 0.6s ease" }} />
+                  </div>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: count > 0 ? color : "#475569", minWidth: 16, textAlign: "right" }}>{count}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>
