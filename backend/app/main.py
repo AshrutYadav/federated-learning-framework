@@ -25,8 +25,19 @@ from backend.database.services.client_service import get_all_clients
 async def lifespan(app: FastAPI):
     # ── Startup: ensure all tables exist, then sync in-memory state ───────
 
-    # Step 0: Create tables if they don't exist (idempotent — safe on every restart)
+    # Step 0: Create tables if they don't exist
     Base.metadata.create_all(bind=engine)
+
+    from sqlalchemy import inspect
+
+    print("=== REGISTERED MODELS ===")
+    print(list(Base.metadata.tables.keys()))
+
+    inspector = inspect(engine)
+
+    print("=== TABLES IN DATABASE ===")
+    print(inspector.get_table_names())
+
     print("[startup] Database tables verified / created")
 
     db = SessionLocal()
