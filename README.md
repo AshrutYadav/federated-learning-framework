@@ -9,6 +9,11 @@ This project is a full-stack Federated Learning Framework that enables distribut
 
 The framework combines Machine Learning, Backend Engineering, Database Management, Security Mechanisms, and Frontend Monitoring into a single platform.
 
+### Live Demo :
+
+* Frontend: https://federated-learning-framework.vercel.app
+* Backend API: https://federated-learning-framework.onrender.com/docs 
+
 ### Key Goals
 
 * Simulate federated learning across multiple clients
