@@ -80,6 +80,7 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
+        FRONTEND_URL,
         "https://federated-learning-framework-ashrutyadavs-projects.vercel.app",
         "https://federated-learning-framework-git-main-ashrutyadavs-projects.vercel.app",
         "https://federated-learning-framework-eeohf0ya9-ashrutyadavs-projects.vercel.app",
