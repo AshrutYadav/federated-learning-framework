@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "")
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -78,10 +80,12 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        os.getenv("FRONTEND_URL", "http://localhost:5173")
+        "https://federated-learning-framework-ashrutyadavs-projects.vercel.app",
+        "https://federated-learning-framework-git-main-ashrutyadavs-projects.vercel.app",
+        "https://federated-learning-framework-eeohf0ya9-ashrutyadavs-projects.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:3000",
     ],
-
-    allow_origin_regex=r"https://.*\.vercel\.app",
 
     allow_methods=["*"],
 
