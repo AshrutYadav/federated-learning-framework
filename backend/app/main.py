@@ -81,15 +81,11 @@ app.add_middleware(
 
     allow_origins=[
         FRONTEND_URL,
-        "https://federated-learning-framework-qerqgah1b-ashrutyadavs-projects.vercel.app",
-        "https://federated-learning-framework-ashrutyadavs-projects.vercel.app",
-        "https://federated-learning-framework-git-main-ashrutyadavs-projects.vercel.app",
-        "https://federated-learning-framework-eeohf0ya9-ashrutyadavs-projects.vercel.app",
         "http://localhost:5173",
         "http://localhost:3000",
-        
     ],
-
+    allow_origin_regex=r"https://federated-learning-framework.*\.vercel\.app",
+    
     allow_methods=["*"],
 
     allow_headers=["*"],
